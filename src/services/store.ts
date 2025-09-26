@@ -1,23 +1,36 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, createAsyncThunk } from '@reduxjs/toolkit';
+import logger from 'redux-logger';
 
 import {
   TypedUseSelectorHook,
+  useDispatch,
   useDispatch as dispatchHook,
+  useSelector,
   useSelector as selectorHook
 } from 'react-redux';
+import { getIngredientsApi } from '@api';
+import { burgerData } from './ingredientsSlice';
+import { constructorBurger } from './constructorSlice';
 
-const rootReducer = () => {}; // Заменить на импорт настоящего редьюсера
+// Заменить на импорт настоящего редьюсера
 
-const store = configureStore({
-  reducer: rootReducer,
-  devTools: process.env.NODE_ENV !== 'production'
-});
-
-export type RootState = ReturnType<typeof rootReducer>;
+export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
 
-export const useDispatch: () => AppDispatch = () => dispatchHook();
-export const useSelector: TypedUseSelectorHook<RootState> = selectorHook;
+export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
+export const useAppSelector = useSelector.withTypes<RootState>();
 
+export const fetchIngredients = createAsyncThunk(
+  'ingredients/fetchData',
+  async () => await getIngredientsApi()
+);
+const store = configureStore({
+  reducer: {
+    ingredients: burgerData,
+    burgerConstructor: constructorBurger
+  },
+  devTools: process.env.NODE_ENV !== 'production'
+  // middleware: (getDefault) => getDefault().concat(logger)
+});
 export default store;

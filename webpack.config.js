@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
 module.exports = {
+  devtool: 'eval-source-map',
   entry: path.resolve(__dirname, './src/index.tsx'),
   module: {
     rules: [
@@ -86,6 +87,7 @@ module.exports = {
     filename: 'bundle.js'
   },
   devServer: {
+    open: true,
     static: path.join(__dirname, './dist'),
     compress: true,
     historyApiFallback: true,
