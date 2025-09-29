@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { TIngredient, TOrder } from '@utils-types';
 import { orderBurgerApi } from '@api';
+import { nanoid } from 'nanoid';
 
 interface ConstructorItems {
   bun: TIngredient | null;
@@ -41,16 +42,17 @@ const burgerConstructorSlice = createSlice({
   reducers: {
     addBun(state, action: PayloadAction<TIngredient>) {
       state.constructorItems.bun = action.payload;
-      console.log('Добавление ингредиента');
     },
     addIngredient(state, action: PayloadAction<TIngredient>) {
-      console.log('Добавление ингредиента');
-      state.constructorItems.ingredients.push(action.payload);
+      state.constructorItems.ingredients.push({
+        ...action.payload,
+        uuid: nanoid() // уникальный идентификатор экземпляра
+      });
     },
     removeIngredient(state, action: PayloadAction<string>) {
       state.constructorItems.ingredients =
         state.constructorItems.ingredients.filter(
-          (ing) => ing._id !== action.payload
+          (ing) => ing.uuid !== action.payload
         );
     },
     clearConstructor(state) {
