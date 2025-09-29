@@ -9,8 +9,8 @@ import {
   useSelector as selectorHook
 } from 'react-redux';
 import { getIngredientsApi } from '@api';
-import { burgerData } from './ingredientsSlice';
-import { constructorBurger } from './constructorSlice';
+import { burgerData } from './slices/ingredientsSlice';
+import { constructorBurger } from './slices/constructorSlice';
 
 // Заменить на импорт настоящего редьюсера
 

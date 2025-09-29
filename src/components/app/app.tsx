@@ -11,18 +11,28 @@ import {
 } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route';
+import { useEffect } from 'react';
+import { fetchIngredients, useAppDispatch } from '../../services/store';
 
 const App = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const backgroundLocation = location.state?.background;
   const handleModalClose = () => navigate(-1);
+
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchIngredients());
+  }, [dispatch]);
+
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes location={{ pathname: '/' }}>
+      <Routes location={backgroundLocation || location}>
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />

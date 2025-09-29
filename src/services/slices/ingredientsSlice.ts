@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
-import { fetchIngredients } from './store';
+import { fetchIngredients } from '../store';
 import isEqual from 'react-fast-compare';
 
 interface IngredientsState {
