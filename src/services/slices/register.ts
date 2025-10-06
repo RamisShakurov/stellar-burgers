@@ -17,7 +17,6 @@ export const fetchRegisterUser = createAsyncThunk(
   'register/fetchRegisterUser',
   async (userData: TRegisterData) => await registerUserApi(userData)
 );
-
 export const userRegisterSlice = createSlice({
   name: 'register',
   initialState,
@@ -40,4 +39,4 @@ export const userRegisterSlice = createSlice({
   }
 });
 
-export default userRegisterSlice.reducer;
+export const userRegisterReducer = userRegisterSlice.reducer;

@@ -11,6 +11,8 @@ import {
 import { getIngredientsApi } from '@api';
 import { burgerData } from './slices/ingredientsSlice';
 import { constructorBurger } from './slices/constructorSlice';
+import { userRegisterReducer } from './slices/register';
+import { userLoginReducer } from './slices/user';
 
 // Заменить на импорт настоящего редьюсера
 
@@ -28,7 +30,9 @@ export const fetchIngredients = createAsyncThunk(
 const store = configureStore({
   reducer: {
     ingredients: burgerData,
-    burgerConstructor: constructorBurger
+    burgerConstructor: constructorBurger,
+    register: userRegisterReducer,
+    user: userLoginReducer
   },
   devTools: process.env.NODE_ENV !== 'production'
   // middleware: (getDefault) => getDefault().concat(logger)

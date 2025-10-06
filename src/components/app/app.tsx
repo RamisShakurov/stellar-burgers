@@ -16,17 +16,26 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route';
 import { useEffect } from 'react';
-import { fetchIngredients, useAppDispatch } from '../../services/store';
+import {
+  fetchIngredients,
+  useAppDispatch,
+  useAppSelector
+} from '../../services/store';
+import { getUserApi, updateUserApi } from '@api';
+import { fetchUser, loginUser } from '../../services/slices/user';
 
 const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const backgroundLocation = location.state?.background;
   const handleModalClose = () => navigate(-1);
-
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchIngredients());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchUser()); // проверяем токены и получаем профиль
   }, [dispatch]);
 
   return (

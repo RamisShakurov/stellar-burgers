@@ -212,7 +212,6 @@ export const getUserApi = () =>
       authorization: getCookie('accessToken')
     } as HeadersInit
   });
-
 export const updateUserApi = (user: Partial<TRegisterData>) =>
   fetchWithRefresh<TUserResponse>(`${URL}/auth/user`, {
     method: 'PATCH',
