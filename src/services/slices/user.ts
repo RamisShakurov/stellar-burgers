@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getUserApi, loginUserApi, TRegisterData } from '@api';
+import { getUserApi, loginUserApi, logoutApi, TRegisterData } from '@api';
 import { TUser } from '@utils-types';
-import { setCookie } from '../../utils/cookie';
+import { deleteCookie, setCookie } from '../../utils/cookie';
 
 type TUserState = {
   isAuthChecked: boolean;
@@ -10,6 +10,7 @@ type TUserState = {
   loginUserError: null | string;
   loginUserRequest: boolean;
 };
+
 const initialState: TUserState = {
   isAuthChecked: false,
   isAuthenticated: false,
@@ -34,6 +35,20 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const logoutUser = createAsyncThunk(
+  'user/logoutUser',
+  async (_, { dispatch }) => {
+    try {
+      await logoutApi();
+      localStorage.clear();
+      deleteCookie('accessToken');
+      dispatch(userLogout());
+    } catch (error) {
+      console.log('Ошибка выполнения выхода');
+    }
+  }
+);
+
 export const fetchUser = createAsyncThunk(
   'user/fetchUser',
   async (_, { rejectWithValue }) => {
@@ -50,7 +65,13 @@ export const fetchUser = createAsyncThunk(
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    userLogout: (state) => {
+      state.data = null;
+      state.isAuthenticated = false;
+      state.isAuthChecked = true;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
@@ -68,6 +89,9 @@ export const userSlice = createSlice({
         state.isAuthenticated = true;
         state.isAuthChecked = true;
       })
+      .addCase(fetchUser.pending, (state) => {
+        state.isAuthChecked = false;
+      })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.data = action.payload;
         state.isAuthenticated = true;
@@ -79,4 +103,5 @@ export const userSlice = createSlice({
   }
 });
 
+export const { userLogout } = userSlice.actions;
 export const userLoginReducer = userSlice.reducer;

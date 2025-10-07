@@ -3,7 +3,6 @@ import { LoginUI } from '@ui-pages';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 import { loginUser } from '../../services/slices/user';
 import { Navigate } from 'react-router-dom';
-import { getUserApi } from '@api';
 
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
