@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getUserApi, loginUserApi, logoutApi, TRegisterData } from '@api';
+import {
+  getUserApi,
+  loginUserApi,
+  logoutApi,
+  TRegisterData,
+  updateUserApi
+} from '@api';
 import { TUser } from '@utils-types';
 import { deleteCookie, setCookie } from '../../utils/cookie';
 
@@ -62,6 +68,21 @@ export const fetchUser = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk<TUser, Partial<TRegisterData>>(
+  'user/updateUser',
+  async (userData, { rejectWithValue }) => {
+    try {
+      const data = await updateUserApi(userData);
+      if (!data?.success) {
+        throw new Error('Update failed');
+      }
+      return data.user; // вернём пользователя при успехе
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -99,9 +120,12 @@ export const userSlice = createSlice({
       })
       .addCase(fetchUser.rejected, (state) => {
         state.isAuthChecked = true;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.data = action.payload;
       });
   }
 });
 
 export const { userLogout } = userSlice.actions;
-export const userLoginReducer = userSlice.reducer;
+export const userReducer = userSlice.reducer;

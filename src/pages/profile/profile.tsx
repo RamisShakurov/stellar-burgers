@@ -1,6 +1,7 @@
 import { ProfileUI } from '@ui-pages';
 import React, { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { useAppSelector } from '../../services/store';
+import { useAppDispatch, useAppSelector } from '../../services/store';
+import { updateUser } from '../../services/slices/user';
 
 type TProfileForm = {
   name: string;
@@ -10,6 +11,7 @@ type TProfileForm = {
 
 export const Profile: FC = () => {
   const user = useAppSelector((state) => state.user.data);
+  const dispatch = useAppDispatch();
 
   const [formValue, setFormValue] = useState<TProfileForm>({
     name: user?.name || '',
@@ -34,6 +36,7 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    dispatch(updateUser(formValue));
   };
 
   const handleCancel = (e: SyntheticEvent) => {

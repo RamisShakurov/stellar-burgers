@@ -12,7 +12,7 @@ import { getIngredientsApi } from '@api';
 import { burgerData } from './slices/ingredientsSlice';
 import { constructorBurger } from './slices/constructorSlice';
 import { userRegisterReducer } from './slices/register';
-import { userLoginReducer } from './slices/user';
+import { userReducer } from './slices/user';
 
 // Заменить на импорт настоящего редьюсера
 
@@ -32,7 +32,7 @@ const store = configureStore({
     ingredients: burgerData,
     burgerConstructor: constructorBurger,
     register: userRegisterReducer,
-    user: userLoginReducer
+    user: userReducer
   },
   devTools: process.env.NODE_ENV !== 'production'
   // middleware: (getDefault) => getDefault().concat(logger)
