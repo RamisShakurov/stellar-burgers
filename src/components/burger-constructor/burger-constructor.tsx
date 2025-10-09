@@ -1,10 +1,12 @@
 import { FC, useMemo } from 'react';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { useAppSelector } from '../../services/store';
+import { useAppDispatch, useAppSelector } from '../../services/store';
+import { postOrder } from '../../services/slices/constructor';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
+  const dispatch = useAppDispatch();
   const constructorItems = useAppSelector(
     (state) => state.burgerConstructor.constructorItems
   );
@@ -16,9 +18,15 @@ export const BurgerConstructor: FC = () => {
   const orderModalData = useAppSelector(
     (state) => state.burgerConstructor.orderModalData
   );
-
+  const ingredientIds = [
+    constructorItems.bun?._id,
+    ...constructorItems.ingredients.map((item) => item._id),
+    constructorItems.bun?._id
+  ].filter((id): id is string => Boolean(id));
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
+    if (constructorItems.bun || orderRequest) {
+      dispatch(postOrder(ingredientIds));
+    }
   };
   const closeOrderModal = () => {};
 
