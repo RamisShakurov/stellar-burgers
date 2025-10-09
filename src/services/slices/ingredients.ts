@@ -15,7 +15,7 @@ const initialState: IngredientsState = {
   error: null
 };
 
-export const ingredientsSlice = createSlice({
+export const ingredients = createSlice({
   name: 'ingredients',
   initialState,
   reducers: {},
@@ -41,4 +41,4 @@ export const ingredientsSlice = createSlice({
   }
 });
 
-export const burgerData = ingredientsSlice.reducer;
+export const burgerData = ingredients.reducer;

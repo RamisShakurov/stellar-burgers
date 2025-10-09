@@ -9,10 +9,11 @@ import {
   useSelector as selectorHook
 } from 'react-redux';
 import { getIngredientsApi } from '@api';
-import { burgerData } from './slices/ingredientsSlice';
-import { constructorBurger } from './slices/constructorSlice';
+import { burgerData } from './slices/ingredients';
+import { constructorBurger } from './slices/constructor';
 import { userRegisterReducer } from './slices/register';
 import { userReducer } from './slices/user';
+import { feedReducer } from './slices/feed';
 
 // Заменить на импорт настоящего редьюсера
 
@@ -29,6 +30,7 @@ export const fetchIngredients = createAsyncThunk(
 );
 const store = configureStore({
   reducer: {
+    feed: feedReducer,
     ingredients: burgerData,
     burgerConstructor: constructorBurger,
     register: userRegisterReducer,
