@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { TIngredient, TOrder } from '@utils-types';
-import { orderBurgerApi } from '@api';
+import { getOrdersApi, orderBurgerApi } from '@api';
 import { nanoid } from 'nanoid';
 
 interface ConstructorItems {
@@ -13,13 +13,15 @@ interface ConstructorState {
   orderRequest: boolean;
   orderModalData: TOrder | null;
   error: string | null;
+  modalOpenState: boolean;
 }
 
 const initialState: ConstructorState = {
   constructorItems: { bun: null, ingredients: [] },
   orderRequest: false,
   orderModalData: null,
-  error: null
+  error: null,
+  modalOpenState: false
 };
 
 // Асинхронный экшн для заказа бургера
@@ -60,19 +62,25 @@ const burgerConstructorSlice = createSlice({
       state.orderModalData = null;
       state.error = null;
       state.orderRequest = false;
+    },
+    closeModal(state) {
+      state.modalOpenState = false;
     }
   },
   extraReducers: (builder) => {
     builder
       .addCase(postOrder.pending, (state) => {
         state.orderRequest = true;
+        state.modalOpenState = true;
         state.error = null;
+        state.orderModalData = null;
       })
       .addCase(postOrder.fulfilled, (state, action: PayloadAction<TOrder>) => {
         state.orderRequest = false;
         state.orderModalData = action.payload;
         // после успешного заказа очищаем конструктор
         state.constructorItems = { bun: null, ingredients: [] };
+        state.modalOpenState = true;
       })
       .addCase(postOrder.rejected, (state, action) => {
         state.orderRequest = false;
@@ -81,7 +89,12 @@ const burgerConstructorSlice = createSlice({
   }
 });
 
-export const { addBun, addIngredient, removeIngredient, clearConstructor } =
-  burgerConstructorSlice.actions;
+export const {
+  addBun,
+  addIngredient,
+  removeIngredient,
+  clearConstructor,
+  closeModal
+} = burgerConstructorSlice.actions;
 
 export const constructorBurger = burgerConstructorSlice.reducer;

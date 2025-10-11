@@ -18,28 +18,33 @@ import { ProtectedRoute } from '../protected-route';
 import { fetchIngredients, useAppDispatch } from '../../services/store';
 import { fetchUser } from '../../services/slices/user';
 import styles from './app.module.css';
+import { getOrdersUser } from '../../services/slices/feed';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
-  // для модалок
+  // Проверяем, есть ли фоновое состояние (если открыли модалку поверх другой страницы)
   const backgroundLocation =
     location.state && (location.state as any).background;
 
   useEffect(() => {
     dispatch(fetchIngredients());
     dispatch(fetchUser());
+    dispatch(getOrdersUser());
   }, [dispatch]);
 
-  const handleModalClose = () => navigate(-1);
+  const handleModalClose = () => {
+    if (backgroundLocation) navigate(-1);
+    else navigate('/');
+  };
 
   return (
     <div className={styles.app}>
       <AppHeader />
 
-      {/* Основной роутинг + модалки */}
+      {/* Основной роутинг */}
       <Routes location={backgroundLocation || location}>
         {/* Главные страницы */}
         <Route path='/' element={<ConstructorPage />} />
@@ -97,30 +102,14 @@ const App: FC = () => {
           }
         />
 
-        {/* Модалки */}
-        <Route
-          path='/ingredients/:id'
-          element={
-            <Modal title='Детали ингредиента' onClose={handleModalClose}>
-              <IngredientDetails />
-            </Modal>
-          }
-        />
-        <Route
-          path='/feed/:number'
-          element={
-            <Modal title='Детали заказа' onClose={handleModalClose}>
-              <OrderInfo />
-            </Modal>
-          }
-        />
+        {/* Страницы деталей (если открыты напрямую, без модалки) */}
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
         <Route
           path='/profile/orders/:number'
           element={
             <ProtectedRoute>
-              <Modal title='Детали заказа' onClose={handleModalClose}>
-                <OrderInfo />
-              </Modal>
+              <OrderInfo />
             </ProtectedRoute>
           }
         />
@@ -128,6 +117,38 @@ const App: FC = () => {
         {/* 404 */}
         <Route path='*' element={<NotFound404 />} />
       </Routes>
+
+      {/* Если есть backgroundLocation — рендерим модалки поверх */}
+      {backgroundLocation && (
+        <Routes>
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal title='Детали ингредиента' onClose={handleModalClose}>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path='/feed/:number'
+            element={
+              <Modal title='Детали заказа' onClose={handleModalClose}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <ProtectedRoute>
+                <Modal title='Детали заказа' onClose={handleModalClose}>
+                  <OrderInfo />
+                </Modal>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      )}
     </div>
   );
 };

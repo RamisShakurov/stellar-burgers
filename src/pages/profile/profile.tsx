@@ -33,7 +33,6 @@ export const Profile: FC = () => {
     formValue.name !== user?.name ||
     formValue.email !== user?.email ||
     !!formValue.password;
-
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     dispatch(updateUser(formValue));
