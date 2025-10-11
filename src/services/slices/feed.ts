@@ -1,11 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getFeedsApi, getOrdersApi, TFeedsResponse } from '@api';
+import {
+  getFeedsApi,
+  getOrderByNumberApi,
+  getOrdersApi,
+  TFeedsResponse,
+  TOrdersResponse
+} from '@api';
 import { TOrder } from '@utils-types';
 
 type TFeedState = {
   isLoading: boolean;
   data: TFeedsResponse | null;
   feedsUser: TOrder[] | null;
+  feedModal: null | TOrder;
   error: null | string;
 };
 
@@ -13,7 +20,8 @@ export const initialState: TFeedState = {
   isLoading: false,
   data: null,
   error: null,
-  feedsUser: null
+  feedsUser: null,
+  feedModal: null
 };
 
 export const getFeed = createAsyncThunk<
@@ -44,6 +52,21 @@ export const getOrdersUser = createAsyncThunk(
   }
 );
 
+export const getOrderFeed = createAsyncThunk<
+  TOrder,
+  number,
+  { rejectValue: string }
+>('feeds/getOrderFeed', async (number, { rejectWithValue }) => {
+  try {
+    const data = await getOrderByNumberApi(number);
+    return data.orders[0];
+  } catch (error) {
+    return rejectWithValue(
+      error instanceof Error ? error.message : 'Неизвестная ошибка'
+    );
+  }
+});
+
 export const feedSlice = createSlice({
   name: 'feed',
   initialState,
@@ -63,6 +86,7 @@ export const feedSlice = createSlice({
       })
       .addCase(getOrdersUser.pending, (state) => {
         state.isLoading = true;
+        state.feedModal = null;
       })
       .addCase(getOrdersUser.fulfilled, (state, action) => {
         state.feedsUser = action.payload;
@@ -71,6 +95,15 @@ export const feedSlice = createSlice({
       .addCase(getOrdersUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || 'error getFeedUser';
+      })
+      .addCase(getOrderFeed.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getOrderFeed.fulfilled, (state, action) => {
+        state.feedModal = action.payload;
+      })
+      .addCase(getOrderFeed.rejected, (state, action) => {
+        state.error = action.error.message || 'error getOrderFeed';
       });
   }
 });
