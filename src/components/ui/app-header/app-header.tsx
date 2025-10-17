@@ -7,7 +7,7 @@ import {
   Logo,
   ProfileIcon
 } from '@zlden/react-developer-burger-ui-components';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
   <header className={styles.header}>
@@ -15,15 +15,29 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
       <div className={styles.menu_part_left}>
         <>
           <BurgerIcon type={'primary'} />
-          <Link to={'/'} className='text text_type_main-default ml-2 mr-10'>
+          <NavLink
+            to={'/'}
+            className={({ isActive }) =>
+              isActive
+                ? 'text text_type_main-default ml-2 mr-10 text_color_primary'
+                : 'text text_type_main-default ml-2 mr-10 text_color_inactive'
+            }
+          >
             Конструктор
-          </Link>
+          </NavLink>
         </>
         <>
           <ListIcon type={'primary'} />
-          <Link to={'/feed'} className='text text_type_main-default ml-2'>
+          <NavLink
+            to={'/feed'}
+            className={({ isActive }) =>
+              isActive
+                ? 'text text_type_main-default ml-2 mr-10 text_color_primary'
+                : 'text text_type_main-default ml-2 mr-10 text_color_inactive'
+            }
+          >
             Лента заказов
-          </Link>
+          </NavLink>
         </>
       </div>
       <div className={styles.logo}>
@@ -31,9 +45,16 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
       </div>
       <div className={styles.link_position_last}>
         <ProfileIcon type={'primary'} />
-        <Link to={'/login'} className='text text_type_main-default ml-2'>
+        <NavLink
+          to={'/login'}
+          className={({ isActive }) =>
+            isActive
+              ? 'text text_type_main-default ml-2 mr-10 text_color_primary'
+              : 'text text_type_main-default ml-2 mr-10 text_color_inactive'
+          }
+        >
           {userName || 'Личный кабинет'}
-        </Link>
+        </NavLink>
       </div>
     </nav>
   </header>
