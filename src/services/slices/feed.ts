@@ -3,8 +3,7 @@ import {
   getFeedsApi,
   getOrderByNumberApi,
   getOrdersApi,
-  TFeedsResponse,
-  TOrdersResponse
+  TFeedsResponse
 } from '@api';
 import { TOrder } from '@utils-types';
 
