@@ -57,11 +57,31 @@ const burgerConstructorSlice = createSlice({
           (ing) => ing.uuid !== action.payload
         );
     },
-    clearConstructor(state) {
-      state.constructorItems = { bun: null, ingredients: [] };
-      state.orderModalData = null;
-      state.error = null;
-      state.orderRequest = false;
+    moveIngredientUp: (state, action: PayloadAction<string>) => {
+      const index = state.constructorItems.ingredients.findIndex(
+        (item) => item.uuid === action.payload
+      );
+      if (index > 0) {
+        const temp = state.constructorItems.ingredients[index - 1];
+        state.constructorItems.ingredients[index - 1] =
+          state.constructorItems.ingredients[index];
+        state.constructorItems.ingredients[index] = temp;
+      }
+    },
+
+    moveIngredientDown: (state, action: PayloadAction<string>) => {
+      const index = state.constructorItems.ingredients.findIndex(
+        (item) => item.uuid === action.payload
+      );
+      if (
+        index !== -1 &&
+        index < state.constructorItems.ingredients.length - 1
+      ) {
+        const temp = state.constructorItems.ingredients[index + 1];
+        state.constructorItems.ingredients[index + 1] =
+          state.constructorItems.ingredients[index];
+        state.constructorItems.ingredients[index] = temp;
+      }
     },
     closeModal(state) {
       state.modalOpenState = false;
@@ -89,7 +109,13 @@ const burgerConstructorSlice = createSlice({
   }
 });
 
-export const { addBun, addIngredient, removeIngredient, closeModal } =
-  burgerConstructorSlice.actions;
+export const {
+  addBun,
+  addIngredient,
+  removeIngredient,
+  moveIngredientUp,
+  moveIngredientDown,
+  closeModal
+} = burgerConstructorSlice.actions;
 
 export const constructorBurger = burgerConstructorSlice.reducer;
