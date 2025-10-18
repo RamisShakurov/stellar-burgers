@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { TIngredient, TOrder } from '@utils-types';
+import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 import { getOrdersApi, orderBurgerApi } from '@api';
 import { nanoid } from 'nanoid';
 
-interface ConstructorItems {
+export interface ConstructorItems {
   bun: TIngredient | null;
-  ingredients: TIngredient[];
+  ingredients: TConstructorIngredient[];
 }
 
 interface ConstructorState {
@@ -89,12 +89,7 @@ const burgerConstructorSlice = createSlice({
   }
 });
 
-export const {
-  addBun,
-  addIngredient,
-  removeIngredient,
-  clearConstructor,
-  closeModal
-} = burgerConstructorSlice.actions;
+export const { addBun, addIngredient, removeIngredient, closeModal } =
+  burgerConstructorSlice.actions;
 
 export const constructorBurger = burgerConstructorSlice.reducer;
