@@ -45,8 +45,11 @@ export const getOrdersUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       return await getOrdersApi();
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Unknown error');
     }
   }
 );

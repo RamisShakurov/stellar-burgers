@@ -27,7 +27,7 @@ const App: FC = () => {
 
   // Проверяем, есть ли фоновое состояние (если открыли модалку поверх другой страницы)
   const backgroundLocation =
-    location.state && (location.state as any).background;
+    location.state && (location.state as { background?: Location })?.background;
 
   useEffect(() => {
     dispatch(fetchIngredients());

@@ -33,8 +33,11 @@ export const postOrder = createAsyncThunk<
   try {
     const data = await orderBurgerApi(ingredients);
     return data.order;
-  } catch (err: any) {
-    return rejectWithValue(err.message || 'Ошибка при заказе');
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return rejectWithValue(error.message);
+    }
+    return rejectWithValue('Unknown error');
   }
 });
 

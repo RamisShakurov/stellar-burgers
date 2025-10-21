@@ -62,8 +62,11 @@ export const fetchUser = createAsyncThunk(
       const data = await getUserApi();
       if (!data?.success) throw new Error('User fetch failed');
       return data.user;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Unknown error');
     }
   }
 );
@@ -77,8 +80,11 @@ export const updateUser = createAsyncThunk<TUser, Partial<TRegisterData>>(
         throw new Error('Update failed');
       }
       return data.user; // вернём пользователя при успехе
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Unknown error');
     }
   }
 );
