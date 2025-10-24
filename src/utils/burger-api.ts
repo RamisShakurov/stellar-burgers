@@ -61,13 +61,13 @@ type TIngredientsResponse = TServerResponse<{
   data: TIngredient[];
 }>;
 
-type TFeedsResponse = TServerResponse<{
+export type TFeedsResponse = TServerResponse<{
   orders: TOrder[];
   total: number;
   totalToday: number;
 }>;
 
-type TOrdersResponse = TServerResponse<{
+export type TOrdersResponse = TServerResponse<{
   data: TOrder[];
 }>;
 
@@ -137,7 +137,7 @@ export type TRegisterData = {
   password: string;
 };
 
-type TAuthResponse = TServerResponse<{
+export type TAuthResponse = TServerResponse<{
   refreshToken: string;
   accessToken: string;
   user: TUser;
@@ -212,7 +212,6 @@ export const getUserApi = () =>
       authorization: getCookie('accessToken')
     } as HeadersInit
   });
-
 export const updateUserApi = (user: Partial<TRegisterData>) =>
   fetchWithRefresh<TUserResponse>(`${URL}/auth/user`, {
     method: 'PATCH',

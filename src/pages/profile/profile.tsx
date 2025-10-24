@@ -1,41 +1,48 @@
 import { ProfileUI } from '@ui-pages';
-import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import React, { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../services/store';
+import { updateUser } from '../../services/slices/user';
+
+type TProfileForm = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
-  const user = {
-    name: '',
-    email: ''
-  };
+  const user = useAppSelector((state) => state.user.data);
+  const dispatch = useAppDispatch();
 
-  const [formValue, setFormValue] = useState({
-    name: user.name,
-    email: user.email,
+  const [formValue, setFormValue] = useState<TProfileForm>({
+    name: user?.name || '',
+    email: user?.email || '',
     password: ''
   });
 
   useEffect(() => {
-    setFormValue((prevState) => ({
-      ...prevState,
-      name: user?.name || '',
-      email: user?.email || ''
-    }));
+    if (user) {
+      setFormValue({
+        name: user.name || '',
+        email: user.email || '',
+        password: ''
+      });
+    }
   }, [user]);
 
   const isFormChanged =
     formValue.name !== user?.name ||
     formValue.email !== user?.email ||
     !!formValue.password;
-
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    dispatch(updateUser(formValue));
   };
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
     setFormValue({
-      name: user.name,
-      email: user.email,
+      name: user?.name || '',
+      email: user?.email || '',
       password: ''
     });
   };
@@ -56,6 +63,4 @@ export const Profile: FC = () => {
       handleInputChange={handleInputChange}
     />
   );
-
-  return null;
 };

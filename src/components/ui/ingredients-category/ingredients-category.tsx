@@ -16,6 +16,7 @@ export const IngredientsCategoryUI = forwardRef<
         <BurgerIngredient
           ingredient={ingredient}
           key={ingredient._id}
+          data-uuid={ingredient.uuid}
           count={ingredientsCounters[ingredient._id]}
         />
       ))}
