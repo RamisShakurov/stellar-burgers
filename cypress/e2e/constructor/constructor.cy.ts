@@ -3,8 +3,20 @@ describe('Конструктор бургера', () => {
     cy.intercept('GET', '**/api/ingredients', {
       fixture: 'ingredients.json'
     }).as('getIngredients');
+
+    cy.intercept('GET', '**/api/auth/user', {
+      fixture: 'user.json'
+    }).as('getUser');
+
+    cy.intercept('GET', '**/api/orders', { fixture: 'orders.json' }).as(
+      'getOrders'
+    );
+
+    cy.setCookie('accessToken', 'test-access-token');
+    localStorage.setItem('refreshToken', 'test-refresh-token');
+
     cy.visit('/');
-    cy.wait(['@getIngredients']);
+    cy.wait(['@getIngredients', '@getUser', '@getOrders']);
   });
 
   it('Должен добавлять булку в конструктор', () => {
