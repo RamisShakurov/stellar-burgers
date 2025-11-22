@@ -8,7 +8,7 @@ import {
   useSelector,
   useSelector as selectorHook
 } from 'react-redux';
-import { getIngredientsApi } from '@api';
+import { getIngredientsApi } from '../utils/burger-api';
 import { burgerData } from './slices/ingredients';
 import { constructorBurger } from './slices/constructor';
 import { userRegisterReducer } from './slices/register';

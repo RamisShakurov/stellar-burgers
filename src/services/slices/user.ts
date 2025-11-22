@@ -5,7 +5,7 @@ import {
   logoutApi,
   TRegisterData,
   updateUserApi
-} from '@api';
+} from '../../../src/utils/burger-api';
 import { TUser } from '@utils-types';
 import { deleteCookie, setCookie } from '../../utils/cookie';
 

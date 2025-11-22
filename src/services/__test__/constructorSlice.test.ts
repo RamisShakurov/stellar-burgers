@@ -5,8 +5,7 @@ import {
   addIngredient,
   removeIngredient,
   moveIngredientUp,
-  moveIngredientDown,
-
+  moveIngredientDown
 } from '../slices/constructor';
 import { TIngredient, TOrder } from '@utils-types';
 
@@ -81,7 +80,11 @@ describe('burgerConstructor reducer', () => {
         ...initialState,
         constructorItems: { bun: mockBun, ingredients: [] }
       };
-      const newBun: TIngredient = { ...mockBun, _id: '10', name: 'Новая булка' };
+      const newBun: TIngredient = {
+        ...mockBun,
+        _id: '10',
+        name: 'Новая булка'
+      };
       const state = constructorBurger(stateWithBun, addBun(newBun));
       expect(state.constructorItems.bun).toEqual(newBun);
     });
@@ -93,17 +96,28 @@ describe('burgerConstructor reducer', () => {
       );
       expect(state.constructorItems.ingredients).toHaveLength(1);
       // Проверяем все поля кроме uuid
-      expect(state.constructorItems.ingredients[0]._id).toBe(mockIngredient._id);
-      expect(state.constructorItems.ingredients[0].name).toBe(mockIngredient.name);
-      expect(state.constructorItems.ingredients[0].type).toBe(mockIngredient.type);
-      expect(state.constructorItems.ingredients[0].price).toBe(mockIngredient.price);
+      expect(state.constructorItems.ingredients[0]._id).toBe(
+        mockIngredient._id
+      );
+      expect(state.constructorItems.ingredients[0].name).toBe(
+        mockIngredient.name
+      );
+      expect(state.constructorItems.ingredients[0].type).toBe(
+        mockIngredient.type
+      );
+      expect(state.constructorItems.ingredients[0].price).toBe(
+        mockIngredient.price
+      );
       // Проверяем что uuid был добавлен и не пустой
       expect(state.constructorItems.ingredients[0].uuid).toBeDefined();
       expect(state.constructorItems.ingredients[0].uuid).toBeTruthy();
     });
 
     test('addIngredient должен добавить несколько ингредиентов', () => {
-      let state = constructorBurger(initialState, addIngredient(mockIngredient));
+      let state = constructorBurger(
+        initialState,
+        addIngredient(mockIngredient)
+      );
       state = constructorBurger(state, addIngredient(mockSauce));
       expect(state.constructorItems.ingredients).toHaveLength(2);
       expect(state.constructorItems.ingredients[0].uuid).not.toEqual(
@@ -202,12 +216,13 @@ describe('burgerConstructor reducer', () => {
       expect(state.constructorItems.ingredients[1].uuid).toBe('uuid-1');
     });
 
-
-
-  // Тесты сценариев использования
+    // Тесты сценариев использования
 
     test('редактирование состава бургера', () => {
-      let state = constructorBurger(initialState, addIngredient(mockIngredient));
+      let state = constructorBurger(
+        initialState,
+        addIngredient(mockIngredient)
+      );
       const uuid1 = state.constructorItems.ingredients[0].uuid;
 
       state = constructorBurger(state, addIngredient(mockSauce));
