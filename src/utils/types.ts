@@ -39,3 +39,4 @@ export type TUser = {
 };
 
 export type TTabMode = 'bun' | 'sauce' | 'main';
+export class TFeedsResponse {}

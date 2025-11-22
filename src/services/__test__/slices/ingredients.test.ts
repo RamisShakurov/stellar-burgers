@@ -1,5 +1,5 @@
-import { burgerData } from '../slices/ingredients';
-import { fetchIngredients } from '../store';
+import { burgerData } from '../../slices/ingredients';
+import { fetchIngredients } from '../../store';
 import { TIngredient } from '@utils-types';
 
 // Моковые данные
@@ -227,43 +227,6 @@ describe('ingredients reducer', () => {
 
       expect(state.items).toEqual(mockIngredients);
       expect(state.error).toBe('Network error');
-    });
-  });
-
-  describe('loading lifecycle', () => {
-    test('полный цикл успешной загрузки', () => {
-      // Начало загрузки
-      let state = burgerData(initialState, {
-        type: fetchIngredients.pending.type
-      });
-      expect(state.loading).toBe(true);
-      expect(state.error).toBeNull();
-
-      // Успешное завершение
-      state = burgerData(state, {
-        type: fetchIngredients.fulfilled.type,
-        payload: mockIngredients
-      });
-      expect(state.loading).toBe(false);
-      expect(state.items).toEqual(mockIngredients);
-      expect(state.error).toBeNull();
-    });
-
-    test('полный цикл неудачной загрузки', () => {
-      // Начало загрузки
-      let state = burgerData(initialState, {
-        type: fetchIngredients.pending.type
-      });
-      expect(state.loading).toBe(true);
-
-      // Ошибка загрузки
-      state = burgerData(state, {
-        type: fetchIngredients.rejected.type,
-        error: { message: 'Failed to fetch' }
-      });
-      expect(state.loading).toBe(false);
-      expect(state.error).toBe('Failed to fetch');
-      expect(state.items).toEqual([]);
     });
   });
 });

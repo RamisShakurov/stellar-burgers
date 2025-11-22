@@ -1,4 +1,6 @@
 import { configureStore, createAsyncThunk } from '@reduxjs/toolkit';
+export { fetchIngredients } from './slices/ingredients';
+export { ingredients } from './slices/ingredients';
 import logger from 'redux-logger';
 
 import {
@@ -24,10 +26,6 @@ export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
 
-export const fetchIngredients = createAsyncThunk(
-  'ingredients/fetchData',
-  async () => await getIngredientsApi()
-);
 const store = configureStore({
   reducer: {
     feed: feedReducer,

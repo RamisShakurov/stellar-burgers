@@ -17,7 +17,7 @@ type TUserState = {
   loginUserRequest: boolean;
 };
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   isAuthChecked: false,
   isAuthenticated: false,
   data: null,
@@ -107,7 +107,7 @@ export const userSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loginUserRequest = false;
-        state.loginUserError = action.error.message ?? 'error';
+        state.loginUserError = action.error?.message ?? 'error';
         state.isAuthChecked = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {

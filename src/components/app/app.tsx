@@ -15,7 +15,11 @@ import {
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route';
-import { ingredients, useAppDispatch } from '../../services/store';
+import {
+  fetchIngredients,
+  ingredients,
+  useAppDispatch
+} from '../../services/store';
 import { fetchUser } from '../../services/slices/user';
 import styles from './app.module.css';
 import { getOrdersUser } from '../../services/slices/feed';
@@ -30,7 +34,7 @@ const App: FC = () => {
     location.state && (location.state as { background?: Location })?.background;
 
   useEffect(() => {
-    dispatch(ingredients());
+    dispatch(fetchIngredients());
     dispatch(fetchUser());
     dispatch(getOrdersUser());
   }, [dispatch]);
