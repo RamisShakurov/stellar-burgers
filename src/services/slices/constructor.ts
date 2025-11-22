@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
-import { getOrdersApi, orderBurgerApi } from '@api';
+import { orderBurgerApi } from '../../../src/utils/burger-api';
 import { nanoid } from 'nanoid';
 
 export interface ConstructorItems {
@@ -16,7 +16,7 @@ interface ConstructorState {
   modalOpenState: boolean;
 }
 
-const initialState: ConstructorState = {
+export const initialState: ConstructorState = {
   constructorItems: { bun: null, ingredients: [] },
   orderRequest: false,
   orderModalData: null,
