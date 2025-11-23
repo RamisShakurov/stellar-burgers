@@ -9,7 +9,11 @@ import {
 import { AnyAction } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 
-const createAction = (type: string, payload?: any, error?: any): AnyAction => ({
+const createAction = (
+  type: string,
+  payload?: unknown,
+  error?: unknown
+): AnyAction => ({
   type,
   payload,
   error

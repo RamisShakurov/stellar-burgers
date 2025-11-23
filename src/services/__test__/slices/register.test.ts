@@ -1,9 +1,17 @@
-import { userRegisterReducer, fetchRegisterUser, initialState } from '../../slices/register';
+import {
+  userRegisterReducer,
+  fetchRegisterUser,
+  initialState
+} from '../../slices/register';
 import { AnyAction } from '@reduxjs/toolkit';
 import { TAuthResponse } from '../../../utils/burger-api';
 
 // helper to create redux actions
-const createAction = (type: string, payload?: any, error?: any): AnyAction => ({
+const createAction = (
+  type: string,
+  payload?: unknown,
+  error?: unknown
+): AnyAction => ({
   type,
   payload,
   error,
@@ -80,7 +88,9 @@ describe('userRegister reducer', () => {
     test('должен установить error из action.error.message', () => {
       const errorMessage = 'Network error';
 
-      const action = createAction(fetchRegisterUser.rejected.type, undefined, { message: errorMessage });
+      const action = createAction(fetchRegisterUser.rejected.type, undefined, {
+        message: errorMessage
+      });
 
       const state = userRegisterReducer(initialState, action);
 
@@ -97,7 +107,9 @@ describe('userRegister reducer', () => {
         error: null,
       };
 
-      const action = createAction(fetchRegisterUser.rejected.type, undefined, { message: 'fail' });
+      const action = createAction(fetchRegisterUser.rejected.type, undefined, {
+        message: 'fail'
+      });
 
       const state = userRegisterReducer(prevState, action);
 
