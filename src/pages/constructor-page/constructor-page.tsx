@@ -1,5 +1,5 @@
 import {
-  fetchIngredients,
+  ingredients,
   useAppDispatch,
   useAppSelector
 } from '../../services/store';

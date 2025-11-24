@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { registerUserApi, TAuthResponse, TRegisterData } from '@api';
+import {
+  registerUserApi,
+  TAuthResponse,
+  TRegisterData
+} from '../../../src/utils/burger-api';
 
 interface IUserRegisterState {
   data: TAuthResponse | null;

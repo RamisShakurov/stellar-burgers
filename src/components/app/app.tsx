@@ -15,7 +15,11 @@ import {
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route';
-import { fetchIngredients, useAppDispatch } from '../../services/store';
+import {
+  fetchIngredients,
+  ingredients,
+  useAppDispatch
+} from '../../services/store';
 import { fetchUser } from '../../services/slices/user';
 import styles from './app.module.css';
 import { getOrdersUser } from '../../services/slices/feed';

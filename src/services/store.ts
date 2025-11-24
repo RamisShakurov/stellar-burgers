@@ -1,4 +1,6 @@
 import { configureStore, createAsyncThunk } from '@reduxjs/toolkit';
+export { fetchIngredients } from './slices/ingredients';
+export { ingredients } from './slices/ingredients';
 import logger from 'redux-logger';
 
 import {
@@ -8,7 +10,7 @@ import {
   useSelector,
   useSelector as selectorHook
 } from 'react-redux';
-import { getIngredientsApi } from '@api';
+import { getIngredientsApi } from '../utils/burger-api';
 import { burgerData } from './slices/ingredients';
 import { constructorBurger } from './slices/constructor';
 import { userRegisterReducer } from './slices/register';
@@ -24,10 +26,6 @@ export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
 
-export const fetchIngredients = createAsyncThunk(
-  'ingredients/fetchData',
-  async () => await getIngredientsApi()
-);
 const store = configureStore({
   reducer: {
     feed: feedReducer,

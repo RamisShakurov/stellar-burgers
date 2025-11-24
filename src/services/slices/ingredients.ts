@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
-import { fetchIngredients } from '../store';
 import isEqual from 'react-fast-compare';
+import { getIngredientsApi } from '../../utils/burger-api';
 
 interface IngredientsState {
   items: TIngredient[];
@@ -14,6 +14,11 @@ const initialState: IngredientsState = {
   loading: false,
   error: null
 };
+
+export const fetchIngredients = createAsyncThunk(
+  'ingredients/fetchData',
+  async () => await getIngredientsApi()
+);
 
 export const ingredients = createSlice({
   name: 'ingredients',
